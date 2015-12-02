@@ -1,0 +1,18 @@
+{
+  "Bullet": {
+    "damage": 1,
+    "speed": 3
+  },
+  "Missile": {
+    "damage": 2,
+    "speed": 1
+  },
+  "PBullet": {
+    "damage": 1,
+    "speed": 6
+  },
+  "NoShot": {
+    "damage": 0,
+    "speed": 0
+  }
+}

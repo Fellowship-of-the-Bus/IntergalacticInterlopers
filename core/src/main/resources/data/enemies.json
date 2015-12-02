@@ -1,0 +1,50 @@
+{
+  "Drone": {
+    "maxHp": 1,
+    "difficulty": 1,
+    "shotType": "Bullet",
+    "shotInterval": 180,
+    "numShot": 1,
+    "shotDelay": 0
+  },
+  "Fighter": {
+    "maxHp": 3,
+    "difficulty": 2,
+    "shotType": "Bullet",
+    "shotInterval": 120,
+    "numShot": 1,
+    "shotDelay": 0
+  },
+  "SpaceTurtle": {
+    "maxHp": 5,
+    "difficulty": 3,
+    "shotType": "NoShot",
+    "shotInterval": 0,
+    "numShot": 0,
+    "shotDelay": 0
+  },
+  "CosmicBee": {
+    "maxHp": 1,
+    "difficulty": 1,
+    "shotType": "NoShot",
+    "shotInterval": 0,
+    "numShot": 0,
+    "shotDelay": 0
+  },
+  "GalacticDragon": {
+    "maxHp": 10,
+    "difficulty": 10,
+    "shotType": "Bullet",
+    "shotInterval": 150,
+    "numShot": 5,
+    "shotDelay": 10
+  },
+  "CyberSalmon": {
+    "maxHp": 50,
+    "difficulty": 100,
+    "shotType": "Bullet",
+    "shotInterval": 300,
+    "numShot": 3,
+    "shotDelay": 10
+  }
+}

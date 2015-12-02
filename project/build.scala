@@ -11,12 +11,23 @@ object Settings {
   lazy val desktopJarName = SettingKey[String]("desktop-jar-name", "name of JAR file for desktop")
 
   lazy val core = plugins.JvmPlugin.projectSettings ++ Seq(
+
+    resolvers += 
+      "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+
+    resolvers += Resolver.url(
+      "sbt-plugin-releases",
+      new URL("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/")
+    )(Resolver.ivyStylePatterns),
+ 
     version := (version in LocalProject("all-platforms")).value,
     libgdxVersion := (libgdxVersion in LocalProject("all-platforms")).value,
     scalaVersion := (scalaVersion in LocalProject("all-platforms")).value,
     libraryDependencies ++= Seq(
-      "com.badlogicgames.gdx" % "gdx" % libgdxVersion.value
-    ),
+      "com.badlogicgames.gdx" % "gdx" % libgdxVersion.value,
+      "com.github.fellowship_of_the_bus" %% "fellowship-of-the-bus-lib" % "0.3-SNAPSHOT" changing(),
+      "com.propensive" %% "rapture-json-jackson" % "2.0.0-M2-SNAPSHOT"
+   ),
     javacOptions ++= Seq(
       "-Xlint",
       "-encoding", "UTF-8",
@@ -24,6 +35,8 @@ object Settings {
       "-target", "1.6"
     ),
     scalacOptions ++= Seq(
+      // "-Xprint-types",
+      // "-Xprint:typer",
       "-Xlint",
       "-Ywarn-dead-code",
       "-Ywarn-value-discard",
@@ -47,7 +60,7 @@ object Settings {
       "com.badlogicgames.gdx" % "gdx-platform" % libgdxVersion.value classifier "natives-desktop"
     ),
     fork in Compile := true,
-    desktopJarName := "intergalacticinterlopers",
+    desktopJarName := "IntergalacticInterlopers",
     Tasks.assembly
   )
 }
