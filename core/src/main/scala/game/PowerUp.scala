@@ -16,3 +16,14 @@ case object PowerHP extends PowerUpID
 case object PowerShots extends PowerUpID
 case object powerups extends IDMap[PowerUpID, PowerUpAttributes]("powerups.json")
 
+class PowerUp(xc: Float, yc: Float) extends GameObject(xc, yc) {
+  type IDKind = PowerUpID
+
+  def id = PowerShots  // TODO: generalize
+
+  def height = 30f
+  def width = 30f
+
+  // TODO: randomize direction
+  val velocity = (2f, 0f)
+}
