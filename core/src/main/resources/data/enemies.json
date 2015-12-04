@@ -5,7 +5,13 @@
     "shotType": "Bullet",
     "shotInterval": 180,
     "numShot": 1,
-    "shotDelay": 0
+    "shotDelay": 0,
+    "width": 40,
+    "height": 40,
+    "speed": {
+      "x": 1,
+      "y": 2
+    }
   },
   "Fighter": {
     "maxHp": 3,
@@ -13,7 +19,13 @@
     "shotType": "Bullet",
     "shotInterval": 120,
     "numShot": 1,
-    "shotDelay": 0
+    "shotDelay": 0,
+    "width": 40,
+    "height": 40,
+    "speed": {
+      "x": 1,
+      "y": 2
+    }
   },
   "SpaceTurtle": {
     "maxHp": 5,
@@ -21,7 +33,13 @@
     "shotType": "NoShot",
     "shotInterval": 0,
     "numShot": 0,
-    "shotDelay": 0
+    "shotDelay": 0,
+    "width": 60,
+    "height": 30,
+    "speed": {
+      "x": 1,
+      "y": 1
+    }
   },
   "CosmicBee": {
     "maxHp": 1,
@@ -29,7 +47,13 @@
     "shotType": "NoShot",
     "shotInterval": 0,
     "numShot": 0,
-    "shotDelay": 0
+    "shotDelay": 0,
+    "width": 20,
+    "height": 20,
+    "speed": {
+      "x": 4,
+      "y": 3
+    }
   },
   "GalacticDragon": {
     "maxHp": 10,
@@ -37,7 +61,13 @@
     "shotType": "Bullet",
     "shotInterval": 150,
     "numShot": 5,
-    "shotDelay": 10
+    "shotDelay": 10,
+    "width": 60,
+    "height": 40,
+    "speed": {
+      "x": 0,
+      "y": 2
+    }
   },
   "CyberSalmon": {
     "maxHp": 50,
@@ -45,6 +75,12 @@
     "shotType": "Bullet",
     "shotInterval": 300,
     "numShot": 3,
-    "shotDelay": 10
+    "shotDelay": 10,
+    "width": 200,
+    "height": 85,
+    "speed": {
+      "x": 0,
+      "y": 0
+    }
   }
 }

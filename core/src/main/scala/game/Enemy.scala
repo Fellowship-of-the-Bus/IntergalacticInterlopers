@@ -10,9 +10,13 @@ object EnemyImplicits {
 import EnemyImplicits._
 import ProjectileImplicits.extractor
 
+case class Speed(x: Float, y: Float)
+
 case class EnemyAttributes(
   maxHp: Int, difficulty: Int, 
-  shotType: ProjectileID, shotInterval: Int, numShot: Int, shotDelay: Int)
+  shotType: ProjectileID, shotInterval: Int, numShot: Int, shotDelay: Int,
+  speed: Speed,
+  width: Float, height: Float)
 
 trait EnemyID extends ID
 case object Drone extends EnemyID
@@ -23,4 +27,18 @@ case object GalacticDragon extends EnemyID
 case object CyberSalmon extends EnemyID
 
 object enemies extends IDMap[EnemyID, EnemyAttributes]("data/enemies.json")
+
+class Enemy(xc: Float, yc: Float, val id: EnemyID) extends GameObject(xc, yc) {
+  type IDKind = EnemyID
+  val attributes = enemies(id)
+
+  private var hp = attributes.maxHp
+
+  def width = attributes.width
+  def height = attributes.height
+
+  // multiply in random value
+  val velocity = (attributes.speed.x, attributes.speed.y)
+}
+
 
