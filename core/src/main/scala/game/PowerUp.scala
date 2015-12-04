@@ -27,3 +27,9 @@ class PowerUp(xc: Float, yc: Float) extends GameObject(xc, yc) {
   // TODO: randomize direction
   val velocity = (2f, 0f)
 }
+
+object PowerUp {
+  // TODO: randomize position
+  def apply() = new PowerUp(0, 0)
+}
+

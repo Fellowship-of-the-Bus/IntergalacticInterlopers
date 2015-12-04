@@ -28,7 +28,7 @@ case object CyberSalmon extends EnemyID
 
 object enemies extends IDMap[EnemyID, EnemyAttributes]("data/enemies.json")
 
-class Enemy(xc: Float, yc: Float, val id: EnemyID) extends GameObject(xc, yc) {
+class Enemy(val id: EnemyID, xc: Float, yc: Float) extends GameObject(xc, yc) {
   type IDKind = EnemyID
   val attributes = enemies(id)
 
@@ -39,6 +39,15 @@ class Enemy(xc: Float, yc: Float, val id: EnemyID) extends GameObject(xc, yc) {
 
   // multiply in random value
   val velocity = (attributes.speed.x, attributes.speed.y)
+
+  val difficulty = attributes.difficulty
 }
 
-
+object Enemy {
+  def apply() = {
+    val id = enemies.random
+    val x = 0  // TODO: randomize
+    val y = 0
+    new Enemy(id, x, y)
+  }
+}

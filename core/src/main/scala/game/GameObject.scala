@@ -11,7 +11,7 @@ abstract class GameObject(var x: Float, var y: Float) extends CenteredCoordinate
   // generic
   private var isActive = true
   def active = isActive
-  def inactivate = isActive = false
+  def inactivate() = isActive = false
 
   def velocity: (Float, Float)
 

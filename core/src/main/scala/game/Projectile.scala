@@ -13,7 +13,8 @@ object ProjectileImplicits {
 }
 import ProjectileImplicits._
 
-case class ProjectileAttributes(damage: Int, speed: Float)
+case class ProjectileAttributes(damage: Int, speed: Float,
+  width: Float, height: Float)
 
 trait ProjectileID extends ID 
 case object NoShot extends ProjectileID
@@ -23,12 +24,11 @@ case object Missile extends ProjectileID
 case object projectiles extends IDMap[ProjectileID, ProjectileAttributes]("projectiles.json")
 
 
-class Projectile(xc: Float, yc: Float) extends GameObject(xc, yc) {
+class Projectile(val id: ProjectileID, xc: Float, yc: Float) extends GameObject(xc, yc) {
   type IDKind = ProjectileID
-  def id = Bullet  // TODO: generalize
-
-  def width = 10f
-  def height = 10f
+  
+  def width = attributes.width
+  def height = attributes.height
 
   val attributes = projectiles(id)
 
@@ -36,4 +36,18 @@ class Projectile(xc: Float, yc: Float) extends GameObject(xc, yc) {
 
   // TODO: diagonal projectiles?
   val velocity = (0f, attributes.speed)
+}
+
+object Projectile {
+  def apply(shotType: ProjectileID, x: Float, y: Float) = {
+    val direction = shotType match {
+      // enemy shots go down
+      case Bullet | Missile => 1
+
+      // player shots go up
+      case PBullet => -1
+    }
+    val dy = direction * projectiles(shotType).height
+    new Projectile(shotType, x, y+dy)
+  }  
 }

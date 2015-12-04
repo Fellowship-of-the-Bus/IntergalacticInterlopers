@@ -1,18 +1,26 @@
 {
   "Bullet": {
     "damage": 1,
-    "speed": 3
+    "speed": 3,
+    "width": 10,
+    "height": 10
   },
   "Missile": {
     "damage": 2,
-    "speed": 1
+    "speed": 1,
+    "width": 10,
+    "height": 10
   },
   "PBullet": {
     "damage": 1,
-    "speed": 6
+    "speed": 6,
+    "width": 10,
+    "height": 10
   },
   "NoShot": {
     "damage": 0,
-    "speed": 0
+    "speed": 0,
+    "width": 0,
+    "height": 0
   }
 }
