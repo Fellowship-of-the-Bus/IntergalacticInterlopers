@@ -7,8 +7,8 @@ object Main extends App {
 
   val cfg = new LwjglApplicationConfiguration()
   cfg.title = "Intergalactic Interlopers"
-  cfg.height = 568
-  cfg.width = 320
+  cfg.height = 480
+  cfg.width = 800
   cfg.forceExit = false
   new LwjglApplication(new IntergalacticInterlopers(), cfg)
 }

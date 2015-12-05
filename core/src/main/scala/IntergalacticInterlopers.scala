@@ -9,28 +9,44 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer._
 
 class IntergalacticInterlopers extends Game {
   class DemoScreen extends Screen {
-    val camera = new OrthographicCamera(Gdx.graphics.getWidth.toFloat, Gdx.graphics.getHeight.toFloat)
-    camera.position.set(Gdx.graphics.getWidth/2f, Gdx.graphics.getHeight/2f, 0)
-    camera.update()
-    val mainBatch = new SpriteBatch
+    val batch = new SpriteBatch;
+    val camera = new OrthographicCamera();
+    camera.setToOrtho(false, 800, 480);
+    camera.update();
+    val player = new Texture("img/Player.png");
+    val playerR = new Texture("img/PlayerR.png");
     val shapeRenderer = new ShapeRenderer
     shapeRenderer.setProjectionMatrix(camera.combined)
+    var x = 50;
+    var y = 50;
+
+    var xR = 150;
+    var yR = 150;
+
     def render(delta: Float) = {
-      Gdx.gl.glClearColor(1, 1, 0, 1)
+      Gdx.gl.glClearColor(0, 0, 0, 1)
       Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
       Gdx.gl.glLineWidth(20)
 
-      mainBatch.begin()
+      
 
-      shapeRenderer.begin(ShapeType.Line)
-      shapeRenderer.setColor(0, 0, 0, 1)
-      shapeRenderer.circle(160, 284, 100)
-      shapeRenderer.circle(120, 314, 18)
-      shapeRenderer.circle(200, 314, 18)
-      shapeRenderer.polyline(Array(100, 260, 160, 220, 220, 260.0f))
-      shapeRenderer.end()
+      if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        y = y + 5;
+      } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        y = y - 5;
+      }
 
-      mainBatch.end()
+      if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        x = x - 5;
+      } else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        x = x + 5;
+      }
+
+      batch.setProjectionMatrix(camera.combined);
+      batch.begin();
+      batch.draw(player, x, y)
+      batch.draw(playerR, xR, yR)
+      batch.end();
     }
 
     def resize(width: Int, height: Int) = {}
