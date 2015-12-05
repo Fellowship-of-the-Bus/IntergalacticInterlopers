@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics._
 import com.badlogic.gdx.graphics.glutils._
 import com.badlogic.gdx.graphics.g2d._
 import com.badlogic.gdx._
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer._
+import com.badlogic.gdx.scenes.scene2d.ui._
+import com.badlogic.gdx.scenes.scene2d.ui.TextField._
+import com.badlogic.gdx.scenes.scene2d.utils._
+import com.badlogic.gdx.scenes.scene2d._
 
 class IntergalacticInterlopers extends Game {
   class DemoScreen extends Screen {
@@ -22,6 +25,15 @@ class IntergalacticInterlopers extends Game {
 
     var xR = 150;
     var yR = 150;
+    val stage = new Stage()
+    Gdx.input.setInputProcessor(stage)
+
+    val region = new TextureRegionDrawable(new TextureRegion(player))
+    val region2 = new TextureRegionDrawable(new TextureRegion(playerR))
+    val font = new BitmapFont()
+    val tf = new TextField("hello", new TextFieldStyle(font, Color.WHITE, region, region2, region))
+    tf.setBlinkTime(5 * 1/60)
+    stage.addActor(tf);
 
     def render(delta: Float) = {
       Gdx.gl.glClearColor(0, 0, 0, 1)
@@ -43,10 +55,13 @@ class IntergalacticInterlopers extends Game {
       }
 
       batch.setProjectionMatrix(camera.combined);
+      stage.draw()
+      stage.act()
       batch.begin();
       batch.draw(player, x, y)
       batch.draw(playerR, xR, yR)
       batch.end();
+
     }
 
     def resize(width: Int, height: Int) = {}
@@ -58,5 +73,6 @@ class IntergalacticInterlopers extends Game {
   }
   override def create() = {
     this.setScreen(new DemoScreen)
+
   }
 }

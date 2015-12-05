@@ -10,6 +10,8 @@ object Main extends App {
   cfg.height = 480
   cfg.width = 800
   cfg.forceExit = false
+  cfg.resizable = false
+  cfg.foregroundFPS = 60
   new LwjglApplication(new IntergalacticInterlopers(), cfg)
 }
 
