@@ -38,10 +38,15 @@ class IntergalacticInterlopers extends Game {
     val region = new TextureRegionDrawable(new TextureRegion(players(0).texture))
     val region2 = new TextureRegionDrawable(new TextureRegion(players(1).texture))
     val font = new BitmapFont()
-    val tf = new TextField("hello", new TextFieldStyle(font, Color.WHITE, region, region2, region))
-    tf.setBlinkTime(5 * 1/60)
+    val tf = new TextField("", new TextFieldStyle(font, Color.WHITE, region, region2, region))
+    
     stage.addActor(tf);
-
+    tf.setMessageText("Enter host IP address")
+    tf.setTextFieldListener(new TextFieldListener() {
+        override def keyTyped(textField: TextField, key: Char) = {
+          println(s"${key.toInt}")
+        }
+      })
     var me = -1
     var gameStarted = false
     var isHost = false
@@ -70,7 +75,7 @@ class IntergalacticInterlopers extends Game {
           }
         }
 
-        stage.draw()
+        
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         for (p <- players) {
@@ -79,7 +84,7 @@ class IntergalacticInterlopers extends Game {
         batch.end();
       } else if (Gdx.input.isKeyPressed(Input.Keys.H)) {
         isHost = true
-      } else if (Gdx.input.isKeyPressed(Input.Keys.C)) {
+      } else if (Gdx.input.isKeyPressed(Input.Keys.J)) {
         isClient = true
       } else if (isHost) {
           val font = new BitmapFont()
@@ -87,7 +92,7 @@ class IntergalacticInterlopers extends Game {
           font.draw(batch, s"IP: ${InetAddress.getLocalHost.getHostAddress}", 100, 100)
           batch.end()
       } else if (isClient) {
-        
+          stage.draw()
       }
     }
 
