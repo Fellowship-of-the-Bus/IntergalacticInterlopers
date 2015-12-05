@@ -35,11 +35,11 @@ class IntergalacticInterlopers extends Game {
     val stage = new Stage()
     Gdx.input.setInputProcessor(stage)
 
-    val region = new TextureRegionDrawable(new TextureRegion(players(0).texture))
-    val region2 = new TextureRegionDrawable(new TextureRegion(players(1).texture))
+    val tfBackground = new TextureRegionDrawable(new TextureRegion( new Texture("img/white.png")))
+    val tfCursor = new TextureRegionDrawable(new TextureRegion( new Texture("img/bar.png")))
+    val tfSelect = new TextureRegionDrawable(new TextureRegion( new Texture("img/blue.png")))
     val font = new BitmapFont()
-    val tf = new TextField("hello", new TextFieldStyle(font, Color.WHITE, region, region2, region))
-    tf.setBlinkTime(5 * 1/60)
+    val tf = new TextField("hello", new TextFieldStyle(font, Color.BLACK, tfCursor, tfSelect, tfBackground))
     stage.addActor(tf);
 
     var me = -1
