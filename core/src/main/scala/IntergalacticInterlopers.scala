@@ -1,6 +1,7 @@
 package com.github.fellowship_of_the_bus.interlopers
 
-import java.net.InetAddress
+import java.net.{InetSocketAddress, InetAddress, SocketAddress}
+
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics._
@@ -39,12 +40,21 @@ class IntergalacticInterlopers extends Game {
     val tfCursor = new TextureRegionDrawable(new TextureRegion( new Texture("img/bar.png")))
     val tfSelect = new TextureRegionDrawable(new TextureRegion( new Texture("img/blue.png")))
     val font = new BitmapFont()
+
     val tf = new TextField("hello", new TextFieldStyle(font, Color.BLACK, tfCursor, tfSelect, tfBackground))
+
+    implicit var ip: SocketAddress = null
+    val port = 12345
+
     stage.addActor(tf);
     tf.setMessageText("Enter host IP address")
     tf.setTextFieldListener(new TextFieldListener() {
         override def keyTyped(textField: TextField, key: Char) = {
-          println(s"${key.toInt}")
+          if (key == '\r') {
+            val text = tf.getText
+            ip = new InetSocketAddress(text, port)
+            socket.send(s"HELLO")
+          }
         }
       })
     var me = -1
@@ -52,7 +62,7 @@ class IntergalacticInterlopers extends Game {
     var isHost = false
     var isClient = false
 
-    val socket = new UDPSocket(12345, 512)
+    val socket = new UDPSocket(port, 512)
 
     def render(delta: Float) = {
       Gdx.gl.glClearColor(0, 0, 0, 1)
@@ -84,15 +94,27 @@ class IntergalacticInterlopers extends Game {
         batch.end();
       } else if (Gdx.input.isKeyPressed(Input.Keys.H)) {
         isHost = true
+        isClient = false
       } else if (Gdx.input.isKeyPressed(Input.Keys.J)) {
         isClient = true
+        isHost = false
       } else if (isHost) {
-          val font = new BitmapFont()
-          batch.begin()
-          font.draw(batch, s"IP: ${InetAddress.getLocalHost.getHostAddress}", 100, 100)
-          batch.end()
+        val font = new BitmapFont()
+        batch.begin()
+        font.draw(batch, s"IP: ${InetAddress.getLocalHost.getHostAddress}", 100, 100)
+        batch.end()
+
+        val rcv = socket.receive()
+        rcv match {
+          case Some((msg, sender)) =>
+            ip = sender
+            println(s"got $msg from $sender")
+            socket.send("Hello to you too")
+          case None => ()
+        }
+
       } else if (isClient) {
-          stage.draw()
+        stage.draw()
       }
     }
 
