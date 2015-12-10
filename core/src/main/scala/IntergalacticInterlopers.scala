@@ -21,6 +21,9 @@ case class Player(fileName: String, var x: Int, var y: Int) {
 
 class IntergalacticInterlopers extends Game {
   class DemoScreen extends Screen {
+    lazy val lanAddr = IP.localIP
+    lazy val publicAddr = IP.publicIP
+
     val batch = new SpriteBatch;
     val camera = new OrthographicCamera();
     camera.setToOrtho(false, 800, 480);
@@ -101,19 +104,18 @@ class IntergalacticInterlopers extends Game {
       } else if (isHost) {
         val font = new BitmapFont()
         batch.begin()
-        font.draw(batch, s"IP: ${InetAddress.getLocalHost.getHostAddress}", 100, 100)
+        font.draw(batch, s"LAN: $lanAddr  Public IP: $publicAddr", 100, 100)
         batch.end()
 
-        val rcv = socket.receive()
-        rcv match {
-          case Some((msg, sender)) =>
-            ip = sender
-            println(s"got $msg from $sender")
-            socket.send("Hello to you too")
-          case None => ()
+        for ((msg, sender) <- socket.receive) {
+          ip = sender
+          socket.send("Hello to you too")
+          println(s"got $msg from $sender")
         }
-
       } else if (isClient) {
+        for ((msg, sender) <- socket.receive) {
+          println(s"got $msg from $sender")
+        }
         stage.draw()
       }
     }
@@ -128,6 +130,5 @@ class IntergalacticInterlopers extends Game {
 
   override def create() = {
     this.setScreen(new DemoScreen)
-
   }
 }
