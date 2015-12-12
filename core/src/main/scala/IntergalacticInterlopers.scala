@@ -118,6 +118,7 @@ class IntergalacticInterlopers extends GdxGame {
           if (key == '\r') {
             val text = tf.getText
             ip = new InetSocketAddress(text, port)
+            println("Sending a message!")
             socket.send(s"HELLO")
           }
         }
@@ -143,6 +144,13 @@ class IntergalacticInterlopers extends GdxGame {
         } else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
           p.x = p.x + 5;
         }
+
+        socket.send(s"${p.x} ${p.y}")
+        for ((msg, sender) <- socket.receive) {
+          val part = msg.split(" ")
+          players(1-me).x = part(0).toInt
+          players(1-me).y = part(1).toInt
+        }
       } else if (Gdx.input.isKeyPressed(Input.Keys.H)) {
         isHost = true
         isClient = false
@@ -154,10 +162,14 @@ class IntergalacticInterlopers extends GdxGame {
           ip = sender
           socket.send("Hello to you too")
           println(s"got $msg from $sender")
+          me = 0
+          gameStarted = true
         }
       } else if (isClient) {
         for ((msg, sender) <- socket.receive) {
           println(s"got $msg from $sender")
+          me = 1
+          gameStarted = true
         }
       }
     }
