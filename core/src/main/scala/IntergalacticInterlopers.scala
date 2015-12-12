@@ -133,19 +133,28 @@ class IntergalacticInterlopers extends GdxGame {
     def update(delta: Long): Unit = {
       if (gameStarted) {
         val p = players(me)
+        var moved = false
+
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-          p.y = p.y + 5;
-        } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
           p.y = p.y - 5;
+          moved = true
+        } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+          p.y = p.y + 5;
+          moved = true
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
           p.x = p.x - 5;
+          moved = true
         } else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
           p.x = p.x + 5;
+          moved = true
         }
 
-        socket.send(s"${p.x} ${p.y}")
+        if (moved) {
+          socket.send(s"${p.x} ${p.y}")
+        }
+        
         for ((msg, sender) <- socket.receive) {
           val part = msg.split(" ")
           players(1-me).x = part(0).toInt
