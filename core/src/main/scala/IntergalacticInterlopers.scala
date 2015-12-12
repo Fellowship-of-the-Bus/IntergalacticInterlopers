@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils._
 import com.badlogic.gdx.scenes.scene2d.Stage
 
 import com.github.fellowship_of_the_bus.lib.net._
+import com.github.fellowship_of_the_bus.lib.util._
 
 import scala.language.implicitConversions
 
@@ -60,9 +61,9 @@ case class Image(img: Texture, x: Float, y: Float) extends Drawable {
 }
 
 object TextField {
-  val background = new TextureRegionDrawable(new TextureRegion( new Texture("img/white.png")))
-  val cursor = new TextureRegionDrawable(new TextureRegion( new Texture("img/bar.png")))
-  val select = new TextureRegionDrawable(new TextureRegion( new Texture("img/blue.png")))
+  val background = new TextureRegionDrawable(new TextureRegion(new Texture("img/white.png")))
+  val cursor = new TextureRegionDrawable(new TextureRegion(new Texture("img/bar.png")))
+  val select = new TextureRegionDrawable(new TextureRegion(new Texture("img/blue.png")))
   val font = new BitmapFont()
 
   val defaultStyle = new TextFieldStyle(font, Color.BLACK, cursor, select, background)
@@ -130,10 +131,13 @@ class IntergalacticInterlopers extends GdxGame {
 
     val socket = new UDPSocket(port, 512)
 
+    val timers = new TimerListener {}
+
+    var moved = false
     def update(delta: Long): Unit = {
+      timers.update(delta)
       if (gameStarted) {
         val p = players(me)
-        var moved = false
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
           p.y = p.y - 5;
@@ -151,10 +155,10 @@ class IntergalacticInterlopers extends GdxGame {
           moved = true
         }
 
-        if (moved) {
-          socket.send(s"${p.x} ${p.y}")
-        }
-        
+        // if (moved) {
+        //   socket.send(s"${p.x} ${p.y}")
+        // }
+
         for ((msg, sender) <- socket.receive) {
           val part = msg.split(" ")
           players(1-me).x = part(0).toInt
@@ -173,12 +177,16 @@ class IntergalacticInterlopers extends GdxGame {
           println(s"got $msg from $sender")
           me = 0
           gameStarted = true
+          val p = players(me)
+          timers.addTimer(new TickTimer(3, () => if (moved) { moved = false; socket.send(s"${p.x} ${p.y}") }, RepeatForever))
         }
       } else if (isClient) {
         for ((msg, sender) <- socket.receive) {
           println(s"got $msg from $sender")
           me = 1
           gameStarted = true
+          val p = players(me)
+          timers.addTimer(new TickTimer(3, () => if (moved) { moved = false; socket.send(s"${p.x} ${p.y}") }, RepeatForever))
         }
       }
     }
