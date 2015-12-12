@@ -5,12 +5,11 @@ import java.net.{InetSocketAddress, InetAddress, SocketAddress}
 
 import com.badlogic.gdx.{Game => GdxGame, Screen => GdxScreen, Input, Gdx}
 import com.badlogic.gdx.graphics._
-import com.badlogic.gdx.graphics.glutils._
 import com.badlogic.gdx.graphics.g2d._
-import com.badlogic.gdx.scenes.scene2d.ui.{TextField => GdxTextField}
+import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.ui.TextField._
 import com.badlogic.gdx.scenes.scene2d.utils._
-import com.badlogic.gdx.scenes.scene2d._
+import com.badlogic.gdx.scenes.scene2d.Stage
 
 import com.github.fellowship_of_the_bus.lib.net._
 
@@ -44,7 +43,7 @@ trait Drawable {
   def draw(batch: SpriteBatch): Unit
 }
 object Label {
-  val defaultFont = new BitmapFont()
+  val defaultFont = new BitmapFont(true)
 }
 case class Label(text: String, x: Float, y: Float, font: BitmapFont = Label.defaultFont)
  extends Drawable {
@@ -58,6 +57,17 @@ case class Image(img: Texture, x: Float, y: Float) extends Drawable {
   def draw(batch: SpriteBatch): Unit = {
     batch.draw(img, x, y)
   }
+}
+
+object TextField {
+  val background = new TextureRegionDrawable(new TextureRegion( new Texture("img/white.png")))
+  val cursor = new TextureRegionDrawable(new TextureRegion( new Texture("img/bar.png")))
+  val select = new TextureRegionDrawable(new TextureRegion( new Texture("img/blue.png")))
+  val font = new BitmapFont()
+
+  val defaultStyle = new TextFieldStyle(font, Color.BLACK, cursor, select, background)
+
+  def apply(text: String): TextField = new TextField(text, defaultStyle)
 }
 
 abstract class Screen() extends GdxScreen {
@@ -81,32 +91,22 @@ abstract class Screen() extends GdxScreen {
   def dispose() = {}
 }
 
-
 class IntergalacticInterlopers extends GdxGame {
   class DemoScreen extends Screen {
     lazy val lanAddr = IP.localIP
     lazy val publicAddr = IP.publicIP
 
     val camera = new OrthographicCamera();
-    camera.setToOrtho(false, 800, 480);
+    camera.setToOrtho(true, 800, 480);
     camera.update();
 
     val players = Array(Player("img/Player.png", 50, 50),
       Player("img/PlayerR.png", 150, 150))
-    val shapeRenderer = new ShapeRenderer
-    shapeRenderer.setProjectionMatrix(camera.combined)
 
-    var xR = 150;
-    var yR = 150;
     val stage = new Stage()
     Gdx.input.setInputProcessor(stage)
 
-    val tfBackground = new TextureRegionDrawable(new TextureRegion( new Texture("img/white.png")))
-    val tfCursor = new TextureRegionDrawable(new TextureRegion( new Texture("img/bar.png")))
-    val tfSelect = new TextureRegionDrawable(new TextureRegion( new Texture("img/blue.png")))
-    val font = new BitmapFont()
-
-    val tf = new GdxTextField("hello", new TextFieldStyle(font, Color.BLACK, tfCursor, tfSelect, tfBackground))
+    val tf = TextField("hello")
 
     implicit var ip: SocketAddress = null
     val port = 12345
@@ -114,7 +114,7 @@ class IntergalacticInterlopers extends GdxGame {
     stage.addActor(tf);
     tf.setMessageText("Enter host IP address")
     tf.setTextFieldListener(new TextFieldListener() {
-        override def keyTyped(textField: GdxTextField, key: Char) = {
+        override def keyTyped(textField: TextField, key: Char) = {
           if (key == '\r') {
             val text = tf.getText
             ip = new InetSocketAddress(text, port)
