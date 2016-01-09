@@ -2,6 +2,8 @@ package com.github.fellowship_of_the_bus
 package interlopers
 package game
 
+import lib.game.{IDMap,IDFactory}
+
 object PowerUpImplicits {
   implicit object PowerUpID extends IDFactory[PowerUpID] {
     val ids = Vector(PowerHP, PowerShots)

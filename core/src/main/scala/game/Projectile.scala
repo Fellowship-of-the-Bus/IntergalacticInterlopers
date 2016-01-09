@@ -2,13 +2,15 @@ package com.github.fellowship_of_the_bus
 package interlopers
 package game
 
+import lib.game.{IDMap,IDFactory}
+
 import rapture.json._
 
 object ProjectileImplicits {
   implicit object ProjectileID extends IDFactory[ProjectileID] {
     val ids = Vector(Bullet, Missile, PBullet, NoShot)
   }
-  implicit lazy val extractor = 
+  implicit lazy val extractor =
     Json.extractor[String].map(ProjectileID.fromString(_))
 }
 import ProjectileImplicits._
@@ -16,7 +18,7 @@ import ProjectileImplicits._
 case class ProjectileAttributes(damage: Int, speed: Float,
   width: Float, height: Float)
 
-trait ProjectileID extends ID 
+trait ProjectileID extends ID
 case object NoShot extends ProjectileID
 case object PBullet extends ProjectileID
 case object Bullet extends ProjectileID
@@ -26,7 +28,7 @@ case object projectiles extends IDMap[ProjectileID, ProjectileAttributes]("proje
 
 class Projectile(val id: ProjectileID, xc: Float, yc: Float) extends GameObject(xc, yc) {
   type IDKind = ProjectileID
-  
+
   def width = attributes.width
   def height = attributes.height
 
@@ -49,5 +51,5 @@ object Projectile {
     }
     val dy = direction * projectiles(shotType).height
     new Projectile(shotType, x, y+dy)
-  }  
+  }
 }

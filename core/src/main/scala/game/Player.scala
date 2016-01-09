@@ -20,7 +20,7 @@ class Player(xc: Float, yc: Float) extends GameObject(xc, yc) with Shooter {
 
   def move(dx: Float, dy: Float) = {
     x = x + dx
-    y = y + dy   
+    y = y + dy
   }
 
   val velocity = (0f, 0f)

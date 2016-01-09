@@ -12,21 +12,21 @@ object Settings {
 
   lazy val core = plugins.JvmPlugin.projectSettings ++ Seq(
 
-    resolvers += 
+    resolvers +=
       "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
 
     resolvers += Resolver.url(
       "sbt-plugin-releases",
       new URL("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/")
     )(Resolver.ivyStylePatterns),
- 
+
     version := (version in LocalProject("all-platforms")).value,
     libgdxVersion := (libgdxVersion in LocalProject("all-platforms")).value,
     scalaVersion := (scalaVersion in LocalProject("all-platforms")).value,
     libraryDependencies ++= Seq(
       "com.badlogicgames.gdx" % "gdx" % libgdxVersion.value,
       "com.github.fellowship_of_the_bus" %% "fellowship-of-the-bus-lib" % "0.3-SNAPSHOT" changing(),
-      "com.propensive" %% "rapture-json-jackson" % "2.0.0-M2-SNAPSHOT"
+      "com.propensive" %% "rapture-json-jackson" % "2.0.0-M2"
    ),
     javacOptions ++= Seq(
       "-Xlint",
@@ -42,7 +42,7 @@ object Settings {
       "-Ywarn-value-discard",
       // "-Ywarn-numeric-widen",
       "-Ywarn-unused",
-      "-Ywarn-unused-import",
+      // "-Ywarn-unused-import",
       "-unchecked",
       "-deprecation",
       "-feature",
@@ -147,4 +147,3 @@ object LibgdxBuild extends Build {
     settings = Settings.core
   ).aggregate(core, desktop)
 }
-

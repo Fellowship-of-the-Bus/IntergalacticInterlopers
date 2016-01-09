@@ -2,6 +2,8 @@ package com.github.fellowship_of_the_bus
 package interlopers
 package game
 
+import lib.game.{IDMap,IDFactory}
+
 object EnemyImplicits {
   implicit object EnemyID extends IDFactory[EnemyID] {
     val ids = Vector(Drone, Fighter, CosmicBee, SpaceTurtle, GalacticDragon, CyberSalmon)
@@ -13,18 +15,18 @@ import ProjectileImplicits.extractor
 case class Speed(x: Float, y: Float)
 
 case class EnemyAttributes(
-  maxHp: Int, difficulty: Int, 
+  maxHp: Int, difficulty: Int,
   shotType: ProjectileID, shotInterval: Int, numShot: Int, shotDelay: Int,
   speed: Speed,
   width: Float, height: Float)
 
-trait EnemyID extends ID
-case object Drone extends EnemyID
-case object Fighter extends EnemyID
-case object CosmicBee extends EnemyID
-case object SpaceTurtle extends EnemyID
-case object GalacticDragon extends EnemyID
-case object CyberSalmon extends EnemyID
+sealed trait EnemyID extends ID
+final case object Drone extends EnemyID
+final case object Fighter extends EnemyID
+final case object CosmicBee extends EnemyID
+final case object SpaceTurtle extends EnemyID
+final case object GalacticDragon extends EnemyID
+final case object CyberSalmon extends EnemyID
 
 object enemies extends IDMap[EnemyID, EnemyAttributes]("data/enemies.json")
 
